@@ -31,7 +31,7 @@ def get_movie_by_id(movie_id: int) -> Movie:
 def create_movie(
     movie_title: str,
     movie_description: str,
-    duration: int = 90,
+    duration: int = None,
     genres_ids: list = None,
     actors_ids: list = None,
 ) -> Movie:

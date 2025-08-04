@@ -1,20 +1,24 @@
-from typing import List, Dict
+from datetime import datetime
+
 from django.db import transaction
 from db.models import Order, Ticket, User, MovieSession
 from django.db.models import QuerySet
 
 
 def create_order(
-    tickets: List[Dict[str, int]],
+    tickets: list[dict[str, int]],
     username: str,
     date: str = None
 ) -> Order:
     with transaction.atomic():
         user = User.objects.get(username=username)
+        created_at = (
+            datetime.fromisoformat(date) if date else None
+        )
         order = Order.objects.create(
             user=user,
-            created_at=date
-        ) if date else Order.objects.create(user=user)
+            created_at=created_at
+        ) if created_at else Order.objects.create(user=user)
         for ticket in tickets:
             Ticket.objects.create(
                 movie_session=MovieSession.objects
